@@ -16,6 +16,8 @@
 
 package org.codice.testify.objects;
 
+import java.util.HashMap;
+
 /**
  * The Request class stores all the data which is used to select a processor and run it
  */
@@ -23,7 +25,7 @@ public class Request {
 
     private final String type;
     private final String endpoint;
-    private final String testBlock;
+    private final HashMap<String, String> testBlock;
 
     /**
      * The constructor for the Request class sets the processor type being used, the endpoint, and the testBlock that will be sent to the processor
@@ -31,7 +33,7 @@ public class Request {
      * @param endpoint the endpoint that the processor will send information to
      * @param testBlock the information that the processor will utilize for running the test
      */
-    public Request(String type, String endpoint, String testBlock) {
+    public Request(String type, String endpoint, HashMap<String, String> testBlock) {
         this.type = type;
         this.endpoint = endpoint;
         this.testBlock = testBlock;
@@ -57,7 +59,7 @@ public class Request {
      * The getTestBlock method returns the test block
      * @return the test block
      */
-    public String getTestBlock() {
+    public HashMap<String, String> getTestBlock() {
         return testBlock;
     }
 

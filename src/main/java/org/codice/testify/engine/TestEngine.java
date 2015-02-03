@@ -24,7 +24,9 @@ import org.codice.testify.objects.*;
 import org.osgi.framework.BundleContext;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The TestEngine is the main engine class for the Testify.
@@ -142,7 +144,7 @@ public class TestEngine {
         Request request = parsedData.getRequest();
         ActionData actionData = parsedData.getActionData();
         String endpoint = request.getEndpoint();
-        String testBlock = request.getTestBlock();
+        HashMap<String, String> testBlock = request.getTestBlock();
         String assertionBlock = parsedData.getAssertionBlock();
         String preTestProcessorAction = actionData.getPreTestProcessorAction();
         String postTestProcessorAction = actionData.getPostTestProcessorAction();
@@ -152,7 +154,12 @@ public class TestEngine {
         for( String key : dynamicProperties.getPropertyNames() ){
             String value = dynamicProperties.getFirstValue( key );
             endpoint = replaceProp(endpoint, key, value);
-            testBlock = replaceProp( testBlock, key, value );
+//            testBlock = replaceProp( testBlock, key, value );
+            for (String testKey : testBlock.keySet()) {
+                String testEntry = testBlock.get(testKey);
+                testEntry = replaceProp(testEntry, key, value);
+                testBlock.put(testKey, testEntry);
+            }
             assertionBlock = replaceProp( assertionBlock, key, value );
             preTestProcessorAction = replaceProp( preTestProcessorAction, key, value );
             postTestProcessorAction = replaceProp( postTestProcessorAction, key, value );

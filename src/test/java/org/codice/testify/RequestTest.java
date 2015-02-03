@@ -21,25 +21,33 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.util.HashMap;
+
 @RunWith(JUnit4.class)
 public class RequestTest {
 
     @Test
     public void testGetType() {
-        Request request = new Request("Test Type", "Test Endpoint", "Test Test Block");
+        HashMap<String, String> testBlock = new HashMap<>();
+        testBlock.put("test", "Test Test Block");
+        Request request = new Request("Test Type", "Test Endpoint", testBlock);
         assert ( request.getType().equals("Test Type") );
     }
 
     @Test
     public void testGetEndpoint() {
-        Request request = new Request("Test Type", "Test Endpoint", "Test Test Block");
+        HashMap<String, String> testBlock = new HashMap<>();
+        testBlock.put("test", "Test Test Block");
+        Request request = new Request("Test Type", "Test Endpoint", testBlock);
         assert ( request.getEndpoint().equals("Test Endpoint") );
     }
 
     @Test
     public void testGetTestBlock() {
-        Request request = new Request("Test Type", "Test Endpoint", "Test Test Block");
-        assert ( request.getTestBlock().equals("Test Test Block") );
+        HashMap<String, String> testBlock = new HashMap<>();
+        testBlock.put("test", "Test Test Block");
+        Request request = new Request("Test Type", "Test Endpoint", testBlock);
+        assert ( request.getTestBlock().get("test").equals("Test Test Block") );
     }
 
 }

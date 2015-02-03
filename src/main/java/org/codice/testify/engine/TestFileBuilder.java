@@ -21,10 +21,7 @@ import org.codice.testify.handlers.TestParserHandler;
 import org.codice.testify.objects.*;
 import org.osgi.framework.BundleContext;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The TestFileBuilder class takes in the the test directory and other test file information and returns a list of TestData objects.
@@ -79,7 +76,7 @@ public class TestFileBuilder {
                                 ParsedData parsedData = testParserHandler.handleTestParsers(contentName, bundleContext);
 
                                 if (parsedData != null) {
-                                    String testBlock = parsedData.getRequest().getTestBlock();
+                                    HashMap<String, String> testBlock = parsedData.getRequest().getTestBlock();
                                     String endpoint = parsedData.getRequest().getEndpoint();
                                     String assertionBlock = parsedData.getAssertionBlock();
                                     String preTestSetterAction = parsedData.getActionData().getPreTestSetterAction();
@@ -96,7 +93,7 @@ public class TestFileBuilder {
                                     //Check if the parsed test file contains any of the TestProperties
                                     ArrayList<String> containedProps = new ArrayList<>();
                                     for (String prop : testProperties.getPropertyNames()) {
-                                        if (hasProperty(testBlock, prop) || hasProperty(endpoint, prop) || hasProperty(assertionBlock, prop) || hasProperty(preTestProcessorAction, prop) || hasProperty(postTestProcessorAction, prop)) {
+                                        if (hasProperty(testBlock.entrySet().toString(), prop) || hasProperty(endpoint, prop) || hasProperty(assertionBlock, prop) || hasProperty(preTestProcessorAction, prop) || hasProperty(postTestProcessorAction, prop)) {
                                             containedProps.add(prop);
                                         }
                                     }
@@ -118,7 +115,12 @@ public class TestFileBuilder {
 
                                             //Replace the variables with the test properties
                                             for (String key : propertyMap.keySet()) {
-                                                testBlock = replaceProperty(testBlock, key, propertyMap.get(key));
+//                                                testBlock = replaceProperty(testBlock, key, propertyMap.get(key));
+                                                for (String testKey : testBlock.keySet()) {
+                                                    String testEntry = testBlock.get(testKey);
+                                                    testEntry = replaceProperty(testEntry, key, propertyMap.get(key));
+                                                    testBlock.put(testKey, testEntry);
+                                                }
                                                 endpoint = replaceProperty(endpoint, key, propertyMap.get(key));
                                                 assertionBlock = replaceProperty(assertionBlock, key, propertyMap.get(key));
                                                 preTestProcessorAction = replaceProperty(preTestProcessorAction, key, propertyMap.get(key));
