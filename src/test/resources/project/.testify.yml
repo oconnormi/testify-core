@@ -1,0 +1,6 @@
+# Project Directories - Carefull changing these
+RESULTS_DIRECTORY: results
+PREP_DIRECTORY: prep
+DATA_DIRECTORY: data
+TEST_DIRECTORY: tests
+PROPERTIES_DIRECTORY: properties

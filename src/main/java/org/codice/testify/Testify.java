@@ -21,7 +21,7 @@ import org.codice.testify.engine.TestEngine;
 /**
  * The Main class takes in user provided arguments and starts the Testify TestEngine
  */
-public class Main {
+public class Testify {
 
     /**
      * The main method is the starting point for the Testify jar file. It calls the Testify TestEngine.
