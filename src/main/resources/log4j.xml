@@ -33,23 +33,12 @@
         </layout>
     </appender>
 
-    <appender name="TESTIFYCONSOLE" class="org.apache.log4j.ConsoleAppender">
-        <errorHandler class="org.apache.log4j.helpers.OnlyOnceErrorHandler"/>
-        <param name="Target" value="System.out"/>
-        <param name="Threshold" value="ALL"/>
-        <layout class="org.apache.log4j.PatternLayout">
-            <!-- The default pattern: Date Priority [Category] Message\n -->
-            <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
-        </layout>
-    </appender>
-
     <!-- =================== -->
     <!-- Loggers           -->
     <!-- =================== -->
 
     <root>
         <priority value="ALL" />
-        <appender-ref ref="TESTIFYCONSOLE"/>
         <appender-ref ref="TESTIFYFILE"/>
     </root>
 

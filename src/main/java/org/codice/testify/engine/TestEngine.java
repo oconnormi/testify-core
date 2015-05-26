@@ -26,6 +26,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import static org.fusesource.jansi.Ansi.ansi;
+
 /**
  * The TestEngine is the main engine class for the Testify.
  */
@@ -60,6 +62,7 @@ public class TestEngine {
         //Parse config file and store properties
         TestifyLogger.info("Parsing configuration file(s): " + config, this.getClass().getSimpleName());
         TestPropertiesBuilder testPropertiesBuilder = new TestPropertiesBuilder();
+        System.out.println( ansi().render("@|blue Reading Fine Print|@"));
         TestProperties testProperties = testPropertiesBuilder.buildTestProperties(config, bundleContext);
         AllObjects.setObject("testProperties", testProperties);
 
@@ -70,12 +73,14 @@ public class TestEngine {
         TestFileBuilder testFileBuilder = new TestFileBuilder();
         List<TestData> testFiles = testFileBuilder.buildTestFiles(testDir, resultDir, testProperties, bundleContext);
 
+        System.out.println( ansi().render("@|blue Found|@ @|orange" + testFiles.size() + "|@ @|blue Tests|@"));
         //Loop through each test file in test directory
         TestifyLogger.debug("Starting loop through " + testFiles.size() + " test files", this.getClass().getSimpleName());
         for (TestData testFile : testFiles) {
 
             //Store testFile in AllObjects
             AllObjects.setObject("testFile", testFile);
+            System.out.println( ansi().render("@|blue Beginning cross-examination of|@ @|orange " + testFile.getTestName() + "|@"));
 
             //Run preTestProcessorActions using action handler
             if ( testFile.getParsedData().getActionData().getPreTestProcessorAction() != null ){

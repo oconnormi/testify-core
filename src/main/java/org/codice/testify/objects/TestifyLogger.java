@@ -16,9 +16,7 @@
 
 package org.codice.testify.objects;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.log4j.*;
 
 /**
  * The TestifyLogger class can be called by any method of Testify or associated services to write a log message or set the log level
@@ -56,6 +54,25 @@ public class TestifyLogger {
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * Verbose mode activates the console appender
+     * @param verbose - sets whether the verbose mode should be active or not
+     */
+    public static void setVerbose(boolean verbose) {
+        if (verbose) {
+            Logger rootLogger = LogManager.getRootLogger();
+
+            ConsoleAppender console = new ConsoleAppender(); //create appender
+            //configure the appender
+            String PATTERN = "%d{ABSOLUTE} %-5p [%c{1}] %m%n";
+            console.setLayout(new PatternLayout(PATTERN));
+            console.setThreshold(Level.ALL);
+            console.activateOptions();
+            // Add console appender to rootLogger
+            rootLogger.addAppender(console);
         }
     }
 
