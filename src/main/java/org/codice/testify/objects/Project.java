@@ -6,6 +6,8 @@ public class Project {
 
     public File PROJECT_ROOT;
 
+    public String PROJECT_NAME;
+
     public String RESULTS_DIRECTORY;
 
     public String PREP_DIRECTORY;
@@ -25,6 +27,14 @@ public class Project {
 
     public void setProjectRoot(File projectRoot) {
         PROJECT_ROOT = projectRoot;
+    }
+
+    public String getProjectName() {
+        return PROJECT_NAME;
+    }
+
+    public void setProjectName(String projectName) {
+        PROJECT_NAME = projectName;
     }
 
     public String getResultsDirectory() {

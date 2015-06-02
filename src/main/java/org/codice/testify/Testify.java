@@ -16,23 +16,23 @@
 
 package org.codice.testify;
 
-import org.codice.testify.engine.TestEngine;
+import org.codice.testify.cli.CleanCommand;
+import org.codice.testify.cli.InitCommand;
+import org.codice.testify.cli.create.CreateProjectCommand;
+import org.codice.testify.cli.run.RunAllCommand;
 
 import io.airlift.airline.*;
 import io.airlift.airline.help.Help;
-import org.codice.testify.objects.TestifyLogger;
 import org.fusesource.jansi.AnsiConsole;
 
-import static org.fusesource.jansi.Ansi.*;
-import static org.fusesource.jansi.Ansi.Color.*;
-
 import java.io.File;
-import java.util.List;
 
 /**
  * The Main class takes in user provided arguments and starts the Testify TestEngine
  */
 public class Testify {
+
+    private static File userDirectory = new File(System.getProperty("user.dir"));
 
     /**
      * The main method is the starting point for the Testify jar file. It sets up the cli and hands execution
@@ -46,11 +46,15 @@ public class Testify {
         Cli.CliBuilder<Runnable> builder = Cli.<Runnable>builder("testify")
                 .withDescription("an integration test framework")
                 .withDefaultCommand(Help.class)
-                .withCommands(Help.class, Clean.class);
+                .withCommands(Help.class, CleanCommand.class, InitCommand.class);
 
         builder.withGroup("run")
                 .withDescription("run tests")
-                .withDefaultCommand(Run.class);
+                .withDefaultCommand(RunAllCommand.class);
+
+        builder.withGroup("create")
+                .withDescription("create projects and files")
+                .withDefaultCommand(CreateProjectCommand.class);
 
         Cli<Runnable> testifyParser = builder.build();
 
@@ -68,48 +72,4 @@ public class Testify {
 //        System.exit(0);
     }
 
-    public static class TestifyCommand implements Runnable
-    {
-
-        @Option(type = OptionType.GLOBAL, name = {"-v", "--verbose"}, description = "Verbose mode")
-        public boolean verbose = false;
-
-        @Option(type =  OptionType.GLOBAL, name = {"-p", "--property"}, description = "Property")
-        public List<String> properties;
-
-        @Option(type = OptionType.GLOBAL, name = {"-r", "--results"}, arity = 1, description = "Results Directory [default: $PWD/results]")
-        public String resultsDir = System.getProperty("user.dir") + System.lineSeparator() + "results";
-
-        @Option(type = OptionType.GLOBAL, name = {"-c", "--config"}, arity = 1, description = "Config file or directory [default: $PWD/properties")
-        public String configFile = System.getProperty(("user.dir") + System.lineSeparator() + "properties");
-
-        @Option(type = OptionType.GLOBAL, name = {"-l", "--log-level"}, arity = 1, allowedValues = {"TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL"}, description = "Log Level")
-        public String logLevel = "INFO";
-
-        public void run()
-        {
-            TestifyLogger.setVerbose(verbose);
-            System.out.println(getClass().getSimpleName());
-        }
-    }
-
-    @Command(name = "run", description = "Run Testify tests")
-    public static class Run extends TestifyCommand {
-        @Arguments(description = "Directory to run, defaults to working directory")
-        public String directory = System.getProperty("user.dir");
-
-        @Override
-        public void run() {
-
-            TestEngine dtr = new TestEngine();
-            TestifyLogger.setVerbose(verbose);
-            System.out.println( ansi().eraseScreen().render("@|blue Building Docket|@"));
-            dtr.testifyRunner(directory, resultsDir, configFile, logLevel);
-        }
-    }
-
-    @Command(name = "clean", description = "Clean up test runs")
-    public static class Clean extends TestifyCommand {
-
-    }
 }

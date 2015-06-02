@@ -1,4 +1,5 @@
 # Project Directories - Carefull changing these
+PROJECT_NAME: Foo Test
 RESULTS_DIRECTORY: results
 PREP_DIRECTORY: prep
 DATA_DIRECTORY: data
